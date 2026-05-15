@@ -1,0 +1,12 @@
+{
+  "name": "UniSlim",
+  "short_name": "UniSlim",
+  "description": "O app brasileiro #1 para emagrecimento com IA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F2F2F7",
+  "theme_color": "#FF8C42",
+  "icons": [
+    { "src": "/vite.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
