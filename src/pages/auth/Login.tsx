@@ -90,6 +90,13 @@ const Login: React.FC = () => {
         >
           Ativar com código de pagamento
         </button>
+
+        <button
+          onClick={() => { useAuthStore.getState().mockLogin(); navigate('/dashboard'); }}
+          className="w-full text-center text-xs font-semibold mt-4 text-gray-400"
+        >
+          (Desenvolvedor: Entrar sem conta)
+        </button>
       </motion.div>
     </div>
   );

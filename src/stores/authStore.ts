@@ -15,6 +15,7 @@ interface AuthState {
   signOut: () => Promise<void>;
   setProfile: (profile: Perfil) => void;
   updateProfile: (updates: Partial<Perfil>) => Promise<void>;
+  mockLogin: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -25,64 +26,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isAuthenticated: false,
 
   initialize: async () => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        const { data: usuario } = await supabase
-          .from('usuarios')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-
-        const { data: perfil } = await supabase
-          .from('perfis')
-          .select('*')
-          .eq('user_id', session.user.id)
-          .single();
-
-        set({
-          session,
-          user: usuario || null,
-          profile: perfil || null,
-          isAuthenticated: true,
-          isLoading: false,
-        });
-      } else {
-        set({ isLoading: false });
-      }
-
-      supabase.auth.onAuthStateChange(async (_event, session) => {
-        if (session) {
-          const { data: usuario } = await supabase
-            .from('usuarios')
-            .select('*')
-            .eq('id', session.user.id)
-            .single();
-
-          const { data: perfil } = await supabase
-            .from('perfis')
-            .select('*')
-            .eq('user_id', session.user.id)
-            .single();
-
-          set({
-            session,
-            user: usuario || null,
-            profile: perfil || null,
-            isAuthenticated: true,
-          });
-        } else {
-          set({
-            session: null,
-            user: null,
-            profile: null,
-            isAuthenticated: false,
-          });
-        }
-      });
-    } catch {
-      set({ isLoading: false });
-    }
+    // Força o login simulado para rodar o app localmente sem a tela de login
+    get().mockLogin();
   },
 
   signIn: async (email: string, password: string) => {
@@ -114,6 +59,16 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       session: null,
       profile: null,
       isAuthenticated: false,
+    });
+  },
+
+  mockLogin: () => {
+    set({
+      isAuthenticated: true,
+      isLoading: false,
+      user: { id: 'mock-user-id', nome: 'Usuário Teste', email: 'teste@unislim.com', role: 'user', created_at: new Date().toISOString() },
+      session: { user: { id: 'mock-user-id' } } as any,
+      profile: { id: 'mock-profile-id', user_id: 'mock-user-id', peso_atual: 80, peso_meta: 70, altura: 175, nivel_atividade: 'leve', estrategia: 'Equilibrada', refeicoes_dia: 4, agua_meta_ml: 2500, created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
     });
   },
 
