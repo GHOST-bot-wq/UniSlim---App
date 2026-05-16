@@ -7,25 +7,28 @@ export interface Usuario {
   id: string;
   email: string;
   nome: string | null;
-  avatar_url: string | null;
-  ativo: boolean;
+  avatar_url?: string | null;
+  ativo?: boolean;
+  role?: string;
   created_at: string;
 }
 
 export interface Perfil {
   id: string;
   user_id: string;
-  genero: string | null;
-  idade: number | null;
+  genero?: string | null;
+  idade?: number | null;
   altura: number | null;
   peso_atual: number | null;
   peso_meta: number | null;
   nivel_atividade: string | null;
-  restricoes: string[] | null;
+  restricoes?: string[] | null;
   estrategia: string | null;
   refeicoes_dia: number | null;
-  motivacao: string | null;
-  onboarding_done: boolean;
+  motivacao?: string | null;
+  onboarding_done?: boolean;
+  agua_meta_ml?: number;
+  created_at?: string;
   updated_at: string;
 }
 
